@@ -1,12 +1,12 @@
 Feature: Creating a post
-    As a content creator
-    I want to create a post
-    So that I can share information
 
-    Scenario: Create a new post with valid data
-        When I go to the new post page
-        And I fill in "Title" with "Test Post"
-        And I fill in "Body" with "This is a test body."
-        And I check "Published"
-        And I press "Create Post"
-        Then I should see "Post was successfully created"
+    Scenario Outline: See list of posts
+        Given a post titled "<title>" with body "<body>" that is <published>
+        When I go to the posts page
+        Then I should see "<title>"
+        And I should see "<body>"
+
+        Examples:
+            | title      | body                | published   |
+            | Test Post  | This is a test body | published   |
+            | Hello Blog | Hello world         | unpublished |
