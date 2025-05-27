@@ -7,6 +7,6 @@ Feature: Creating a post
         When I go to the new post page
         And I fill in "Title" with "Test Post"
         And I fill in "Body" with "This is a test body."
-        And I check "Publish"
-        And I press "Create Post"
+        And I check "Published"
+        And I press "cancel"
         Then I should see "Post was successfully created"
