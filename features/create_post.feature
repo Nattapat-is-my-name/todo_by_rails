@@ -8,5 +8,5 @@ Feature: Creating a post
         And I fill in "Title" with "Test Post"
         And I fill in "Body" with "This is a test body."
         And I check "Published"
-        And I press "cancel"
+        And I press "Create Post"
         Then I should see "Post was successfully created"
