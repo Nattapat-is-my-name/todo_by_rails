@@ -1,0 +1,15 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: localhost
+  username: postgres
+  password: 1234
+  pool: 5
+
+development:
+  <<: *default
+  database: rails
+
+test:
+  <<: *default
+  database: rails_test
