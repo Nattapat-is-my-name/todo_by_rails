@@ -40,6 +40,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -53,7 +54,7 @@ jobs:
       - name: Lint code for consistent style
         run: bin/rubocop -a
 
-    test:
+  test:
     runs-on: ubuntu-latest
 
     services:
