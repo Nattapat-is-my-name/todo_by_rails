@@ -51,4 +51,4 @@ jobs:
           cd /home/${{ secrets.VPS_USER }}/todo
           docker pull humguyai/todo:${{ steps.vars.outputs.tag }}
           docker compose --env-file .env.production down
-          docker compose --env-file .env.production up -d --build
+          docker compose --env-file .env.production up -d
