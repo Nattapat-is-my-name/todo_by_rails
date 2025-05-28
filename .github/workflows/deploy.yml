@@ -41,15 +41,6 @@ jobs:
           humguyai/todo:latest
         platforms: linux/amd64
 
-    - name: Upload .env.production to VPS
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USER }}
-        key: ${{ secrets.VPS_SSH_KEY }}
-        source: ".env.production"
-        target: "/home/${{ secrets.VPS_USER }}/todo/.env.production"
-
     - name: Deploy on VPS
       uses: appleboy/ssh-action@v1.0.3
       with:
