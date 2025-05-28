@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   db:
     image: postgres:14
@@ -14,10 +16,7 @@ services:
       - .env.production
 
   web:
-    build:
-      context: .
-      args:
-        RAILS_ENV: ${RAILS_ENV}
+    image: humguyai/todo:latest   # <-- replace with your actual image name
     environment:
       RAILS_ENV: ${RAILS_ENV}
       DATABASE_URL: ${DATABASE_URL}
@@ -28,7 +27,7 @@ services:
       POSTGRES_PORT: ${POSTGRES_PORT}
       RAILS_MASTER_KEY: ${RAILS_MASTER_KEY}
     ports:
-      - "3000:3000"
+      - "33000:3000"
     depends_on:
       - db
     command: bundle exec puma -C config/puma.rb
