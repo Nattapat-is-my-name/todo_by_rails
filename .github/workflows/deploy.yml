@@ -1,14 +1,14 @@
-name: Build and Push Docker Image
+name: Build, Push and Deploy
 
 on:
   push:
     tags:
-      - 'v*'  # Trigger only on tags like v1.0.0
+      - 'v*'
     branches:
-      - main  # Optional: for latest tag on main branch
+      - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,7 +21,7 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Extract version from tag
+    - name: Extract version from tag or use latest
       id: vars
       run: |
         if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
@@ -39,3 +39,25 @@ jobs:
         tags: |
           humguyai/todo:${{ steps.vars.outputs.tag }}
           humguyai/todo:latest
+        platforms: linux/amd64
+
+    - name: Upload .env.production to VPS
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        source: ".env.production"
+        target: "/home/${{ secrets.VPS_USER }}/todo/.env.production"
+
+    - name: Deploy on VPS
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        script: |
+          cd /home/${{ secrets.VPS_USER }}/todo
+          docker pull humguyai/todo:${{ steps.vars.outputs.tag }}
+          docker compose --env-file .env.production down
+          docker compose --env-file .env.production up -d --build
